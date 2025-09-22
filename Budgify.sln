@@ -5,18 +5,56 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Domain", "Budgify.Domain\Budgify.Domain.csproj", "{DCC1D188-9802-4585-81CD-C83BC2C5E3DE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Application", "Budgify.Application\Budgify.Application.csproj", "{CE976812-50CF-4D81-9639-3A72369A1B77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Infrastructure", "Budgify.Infrastructure\Budgify.Infrastructure.csproj", "{8A8C05D1-628D-4C41-A32F-3DC77303FE7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.ConsoleApp", "Budgify.ConsoleApp\Budgify.ConsoleApp.csproj", "{1791C9B1-D52A-407A-B9D9-118DBA557C16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Testes", "Budgify.Testes\Budgify.Testes.csproj", "{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Tests", "Budgify.Tests\Budgify.Tests.csproj", "{E606E99C-63AD-40CB-9C21-828D81D1C048}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DCC1D188-9802-4585-81CD-C83BC2C5E3DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DCC1D188-9802-4585-81CD-C83BC2C5E3DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCC1D188-9802-4585-81CD-C83BC2C5E3DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCC1D188-9802-4585-81CD-C83BC2C5E3DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE976812-50CF-4D81-9639-3A72369A1B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE976812-50CF-4D81-9639-3A72369A1B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE976812-50CF-4D81-9639-3A72369A1B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE976812-50CF-4D81-9639-3A72369A1B77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A8C05D1-628D-4C41-A32F-3DC77303FE7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8C05D1-628D-4C41-A32F-3DC77303FE7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8C05D1-628D-4C41-A32F-3DC77303FE7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8C05D1-628D-4C41-A32F-3DC77303FE7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1791C9B1-D52A-407A-B9D9-118DBA557C16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1791C9B1-D52A-407A-B9D9-118DBA557C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1791C9B1-D52A-407A-B9D9-118DBA557C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1791C9B1-D52A-407A-B9D9-118DBA557C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E606E99C-63AD-40CB-9C21-828D81D1C048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E606E99C-63AD-40CB-9C21-828D81D1C048}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E606E99C-63AD-40CB-9C21-828D81D1C048}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E606E99C-63AD-40CB-9C21-828D81D1C048}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {129A0BFD-B044-4D1F-A036-20A7D542ADBC}
 	EndGlobalSection
 EndGlobal
