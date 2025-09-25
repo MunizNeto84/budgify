@@ -5,9 +5,9 @@ services:
     image: postgres:16
     container_name: budify-db
     environment:
-      - POSTGRES_USER=budifyadmin
-      - POSTGRES_PASSWORD=myscretpassword
-      - POSTGRES_DB=budify
+      - POSTGRES_USER=budgifyadmin
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=budgify
     ports:
       - "5432:5432"
     volumes:
