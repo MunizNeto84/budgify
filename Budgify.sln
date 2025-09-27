@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Infrastructure", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.ConsoleApp", "Budgify.ConsoleApp\Budgify.ConsoleApp.csproj", "{1791C9B1-D52A-407A-B9D9-118DBA557C16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Testes", "Budgify.Testes\Budgify.Testes.csproj", "{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Tests", "Budgify.Tests\Budgify.Tests.csproj", "{E606E99C-63AD-40CB-9C21-828D81D1C048}"
 EndProject
 Global
@@ -42,10 +40,6 @@ Global
 		{1791C9B1-D52A-407A-B9D9-118DBA557C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1791C9B1-D52A-407A-B9D9-118DBA557C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1791C9B1-D52A-407A-B9D9-118DBA557C16}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DE57594-C5DD-47E1-BE6D-FAC25498BB13}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E606E99C-63AD-40CB-9C21-828D81D1C048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E606E99C-63AD-40CB-9C21-828D81D1C048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E606E99C-63AD-40CB-9C21-828D81D1C048}.Release|Any CPU.ActiveCfg = Release|Any CPU

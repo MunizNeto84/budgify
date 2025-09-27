@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Budgify.Application\Budgify.Application.csproj" />
-    <ProjectReference Include="..\Budgify.Infrastructure\Budgify.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Budgify.Application\Budgify.Application.csproj" />
+    <ProjectReference Include="..\Budgify.Infrastructure\Budgify.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

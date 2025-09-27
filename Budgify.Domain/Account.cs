@@ -3,7 +3,7 @@
 public class Account
 {
     public Guid Id { get; set; }
-    public string BankName { get; set; }
+    public string BankName { get; set; } = string.Empty;
     public decimal InitialBalance { get; set; }
     public bool HasCreditCard { get; set; }
 

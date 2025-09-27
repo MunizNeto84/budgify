@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Budgify.Domain\Budgify.Domain.csproj" />
+    <ProjectReference Include="..\Budgify.Application\Budgify.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
