@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Runtime.InteropServices;
 
 var builder = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -22,6 +23,8 @@ builder.ConfigureServices((hostContext, services) =>
     services.AddScoped<IAccountRepository, AccountRepository>();
     services.AddScoped<IIncomeService, IncomeService>();
     services.AddScoped<IIncomeRepository, IncomeRepository>();
+    services.AddScoped<IExpenseService, ExpenseService>();
+    services.AddScoped<IExpenseRepository, ExpenseRepository>();
 });
 
 var host = builder.Build();
@@ -31,6 +34,7 @@ using (var scope = host.Services.CreateScope())
     var services = scope.ServiceProvider;
     var accountService = services.GetRequiredService<IAccountService>();
     var incomeService = services.GetRequiredService<IIncomeService>();
+    var expenseService = services.GetRequiredService<IExpenseService>();
 
     Console.WriteLine("--- Cadastro de Nova Conta ---");
 
@@ -52,16 +56,34 @@ using (var scope = host.Services.CreateScope())
     var date = DateTime.UtcNow;
     Console.WriteLine($"Data: {date.ToShortDateString()}");
 
-    Console.WriteLine("Categoria (Ex: Salário, Vendas): ");
+    Console.Write("Categoria (Ex: Salário, Vendas): ");
     var category = Console.ReadLine()!;
 
-    Console.WriteLine("Tipo (Ex: Fixo, Variável): ");
+    Console.Write("Tipo (Ex: Fixo, Variável): ");
     var incomeType = Console.ReadLine()!;
 
-    Console.WriteLine("Valor: ");
+    Console.Write("Valor: ");
     var amount = decimal.Parse(Console.ReadLine()!);
 
     incomeService.CreateIncome(date, category, incomeType, amount);
 
     Console.WriteLine("\nReceita criada com sucesso!");
+
+    Console.WriteLine("\n--- Cadastro de Nova Despesa ---");
+
+    var expenseDate = DateTime.UtcNow;
+    Console.WriteLine($"Data: {date.ToShortDateString()}");
+
+    Console.Write("Categoria: ");
+    var expenseCategory = Console.ReadLine()!;
+
+    Console.Write("Tipo: ");
+    var expenseType = Console.ReadLine()!;
+
+    Console.Write("Valor: ");
+    var expenseAmount = decimal.Parse(Console.ReadLine()!);
+
+    expenseService.CreateExpense(expenseDate, expenseCategory, expenseType, expenseAmount);
+
+    Console.WriteLine("\nDespesa criada com sucesso!");
 }
