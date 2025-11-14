@@ -7,6 +7,11 @@ namespace Budgify.Infrastructure
     {
         private readonly BudgifyDbContext _context;
 
+        public IEnumerable<Expense> GetAll()
+        {
+            return _context.Expenses.ToList();
+        }
+
         public ExpenseRepository(BudgifyDbContext context) 
         {
             _context = context;
@@ -17,5 +22,7 @@ namespace Budgify.Infrastructure
             _context.Expenses.Add(expense);
             _context.SaveChanges();
         }
+
+       
     }
 }

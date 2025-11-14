@@ -34,6 +34,10 @@ namespace Budgify.ConsoleApp
                 {
                     HandleCreateExpense();
                 }
+                else if (option == 4)
+                {
+                    HandleShowSummary();
+                }
                 else if (option == 0)
                 {
                     Console.WriteLine("\nSaindo do Budgify...");
@@ -52,6 +56,7 @@ namespace Budgify.ConsoleApp
             Console.WriteLine("1 - Cadastro de Nova Conta.");
             Console.WriteLine("2 - Cadastro de Nova Receita.");
             Console.WriteLine("3 - Cadastro de Nova Despesa.");
+            Console.WriteLine("4 - Ver Resumo Financeiro");
             Console.WriteLine("0 - Sair.");
 
             Console.Write("\nDigite uma opção: ");
@@ -114,6 +119,22 @@ namespace Budgify.ConsoleApp
             Console.WriteLine("Precione Enter para contunuar...");
             Console.ReadLine();
             Console.Clear();
+        }
+
+        public void HandleShowSummary()
+        {
+            var summaryService = _services.GetRequiredService<IFinancialSummaryService>();
+            var summary = summaryService.GetSummary();
+
+            Console.WriteLine("--- Resumo Financeiro ---");
+            Console.WriteLine($"Total de Receitas: {summary.TotalIncome:C}");
+            Console.WriteLine($"Total de Despesas: {summary.TotalExpenses:C}");
+            Console.WriteLine($"Saldo Final: {summary.FinalBalance:C}");
+            Console.WriteLine("-------------------------");
+
+
+            Console.WriteLine("\nPressione Enter para voltar ao menu...");
+            Console.ReadLine();
         }
     }
 }

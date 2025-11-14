@@ -7,6 +7,11 @@ public class AccountRepository : IAccountRepository
 {
     private readonly BudgifyDbContext _context;
 
+    public IEnumerable<Account> GetAll()
+    {
+        return _context.Accounts.ToList();
+    }
+
     public AccountRepository(BudgifyDbContext context)
     {
         _context = context;

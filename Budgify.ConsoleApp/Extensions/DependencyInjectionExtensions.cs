@@ -25,6 +25,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IIncomeService, IncomeService>();
         services.AddScoped<IExpenseService, ExpenseService>();
+        services.AddScoped<IFinancialSummaryService, FinancialSummaryService>();
 
         return services;
     }
