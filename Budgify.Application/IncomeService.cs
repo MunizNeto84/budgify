@@ -11,7 +11,7 @@ namespace Budgify.Application
             _incomeRepository = incomeRepository;
         }
 
-        public void CreateIncome(DateTime date, string category, string incomeType, decimal amount)
+        public void CreateIncome(DateTime date, IncomeCategory category, string incomeType, decimal amount)
         {
             var newIncome = new Income
             {

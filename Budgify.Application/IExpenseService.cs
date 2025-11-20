@@ -4,6 +4,6 @@ namespace Budgify.Application
 {
     public interface IExpenseService
     {
-        void CreateExpense(DateTime date, string category, string expenseType, decimal amount);
+        void CreateExpense(DateTime date, ExpenseCategory category, string expenseType, decimal amount);
     }
 }

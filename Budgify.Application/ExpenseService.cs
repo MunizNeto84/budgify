@@ -11,7 +11,7 @@ namespace Budgify.Application
             _expenseRepository = expenseRepository;
         }
 
-        public void CreateExpense(DateTime date, string category, string expenseType, decimal amount)
+        public void CreateExpense(DateTime date, ExpenseCategory category, string expenseType, decimal amount)
         {
             var newExpense = new Expense
             {
