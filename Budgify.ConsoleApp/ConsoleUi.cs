@@ -1,4 +1,5 @@
 ﻿using Budgify.Application;
+using Budgify.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Budgify.ConsoleApp
@@ -87,8 +88,7 @@ namespace Budgify.ConsoleApp
 
             Console.WriteLine("--- Cadastro de Nova Receita. ---");
             var date = DateTime.UtcNow;
-            Console.Write("Categoria: ");
-            var category = Console.ReadLine()!;
+            var category = GetEnumOption<IncomeCategory>();
             Console.Write("Tipo: ");
             var incomeType = Console.ReadLine()!;
             Console.Write("Valor: ");
@@ -107,8 +107,7 @@ namespace Budgify.ConsoleApp
 
             Console.WriteLine("--- Cadastro de Nova Despesa. ---");
             var date = DateTime.UtcNow;
-            Console.Write("Categoria: ");
-            var category = Console.ReadLine()!;
+            var category = GetEnumOption<ExpenseCategory>();
             Console.Write("Tipo: ");
             var expenseType = Console.ReadLine()!;
             Console.Write("Valor: ");
@@ -135,6 +134,27 @@ namespace Budgify.ConsoleApp
 
             Console.WriteLine("\nPressione Enter para voltar ao menu...");
             Console.ReadLine();
+        }
+
+        private T GetEnumOption<T>() where T : struct, Enum
+        {
+            Console.WriteLine("Selecione uma Categoria: ");
+            var values = Enum.GetValues<T>();
+
+            foreach ( var value in values)
+            {
+                Console.WriteLine($"{(int)(object)value} - {value}");
+            }
+
+            Console.WriteLine("Opção: ");
+
+            if(int.TryParse(Console.ReadLine(), out int optionId) && Enum.IsDefined(typeof(T), optionId))
+            {
+                return (T)(Object)optionId;
+            }
+
+            Console.WriteLine("Opção inválida, usado a primeira por padrão.");
+            return values.First();
         }
     }
 }
