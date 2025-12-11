@@ -2,9 +2,14 @@
 using Budgify.Application.Services;
 using Budgify.ConsoleApp;
 using Budgify.Infrastructure.Memory;
+using Budgify.Infrastructure.Repositories;
 
-IAccountRepository repository = new InMemoryAccountRepository();
-IAccountService service = new AccountService(repository);
+IAccountRepository accountRepository = new InMemoryAccountRepository();
+IIncomeRepository incomeRepository = new InMemoryIncomeRepository();
 
-ConsoleUi ui = new ConsoleUi(service);
+IAccountService accountService = new AccountService(accountRepository);
+IIncomeService incomeService = new IncomeService(incomeRepository);
+
+
+ConsoleUi ui = new ConsoleUi(accountService, incomeService);
 ui.Run();
