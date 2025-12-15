@@ -7,12 +7,14 @@ namespace Budgify.ConsoleApp
     {
         private readonly IAccountService _accountService;
         private readonly IIncomeService _incomeService;
+        private readonly IExpenseService _expenseService;
 
 
-        public ConsoleUi(IAccountService accountService, IIncomeService incomeService)
+        public ConsoleUi(IAccountService accountService, IIncomeService incomeService, IExpenseService expenseService)
         {
             _accountService = accountService;
             _incomeService = incomeService;
+            _expenseService = expenseService;
         }
 
         public void Run()
@@ -41,7 +43,7 @@ namespace Budgify.ConsoleApp
                         WaitUser();
                         break;
                     case 3:
-                        Console.WriteLine("Despesa");
+                        HandleExpenseMenu();
                         WaitUser();
                         break;
                     case 4:
@@ -205,6 +207,93 @@ namespace Budgify.ConsoleApp
             } while (option != 0);
         }
 
+        private void HandleExpenseMenu()
+        {
+            int option = -1;
+            do
+            {
+                ShowExpenseMenu();
+                Console.Write("\nDigite uma opção: ");
+                var input = Console.ReadLine()!;
+                if (!int.TryParse(input, out option))
+                {
+                    option = -1;
+                }
+
+                Console.Clear();
+
+                switch (option)
+                {
+                    case 1:
+                        var accounts = _accountService.GetAllAccounts();
+                        if (accounts.Count == 0)
+                        {
+                            Console.WriteLine("Você precisa criar uma conta antes");
+                            WaitUser();
+                            break;
+                        }
+
+                        Console.WriteLine("Lançar Despesa:");
+                        Console.WriteLine("Para qual conta é essa despesa? \n");
+                        for (int i = 0; i < accounts.Count; i++)
+                        {
+                            Console.Write($"{i} {accounts[i].Name}");
+                        }
+                        Console.WriteLine();
+                        Console.Write("\nDigite o número da conta: ");
+                        int index = int.Parse(Console.ReadLine()!);
+                        var selectedAccount = accounts[index];
+
+                        Console.Write("Descrição: ");
+                        string description = Console.ReadLine()!;
+
+                        Console.Write("Valor: ");
+                        decimal amount = decimal.Parse(Console.ReadLine()!);
+
+                        Console.WriteLine("\nSelecione a categoria:");
+                        foreach (var cat in Enum.GetValues<ExpenseCategory>())
+                        {
+                            Console.WriteLine($"{(int)cat} - {cat}");
+                        }
+                        Console.Write("Opção: ");
+                        int catOption = int.Parse(Console.ReadLine()!);
+
+                        ExpenseCategory category = (ExpenseCategory)catOption;
+
+                        _expenseService.CreateExpense(selectedAccount.Id, amount, DateTime.Now, category, description);
+
+                        Console.WriteLine("Despesa lançada no sistema!");
+                        WaitUser();
+                        break;
+                    case 2:
+                        Console.WriteLine("Listar despesas lançadas:");
+                        var expenses = _expenseService.GetAllExpenses();
+                        if (expenses.Count == 0)
+                        {
+                            Console.WriteLine("Não existe despesas lançadas");
+                        }
+                        else
+                        {
+                            foreach (var expense in expenses)
+                            {
+                                Console.WriteLine($"{expense.Date.ToShortDateString()} | {expense.Description} | {expense.Amount:C} | ({expense.Category})");
+                            }
+                        }
+
+                        WaitUser();
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida.");
+                        WaitUser();
+                        break;
+                }
+
+
+            } while (option != 0);
+        }
+
         private void ShowMenu()
         {
             Console.WriteLine("===============================================");
@@ -236,6 +325,17 @@ namespace Budgify.ConsoleApp
             Console.WriteLine("===============================================");
             Console.WriteLine("1 - Lançar Receita");
             Console.WriteLine("2 - Listar receitas(s)\n");
+            Console.WriteLine("0 - Voltar");
+            Console.WriteLine("===============================================");
+        }
+
+        private void ShowExpenseMenu()
+        {
+            Console.WriteLine("===============================================");
+            Console.WriteLine("==================== EXPENSE ==================");
+            Console.WriteLine("===============================================");
+            Console.WriteLine("1 - Lançar Despesa");
+            Console.WriteLine("2 - Listar despesas(s)\n");
             Console.WriteLine("0 - Voltar");
             Console.WriteLine("===============================================");
         }
