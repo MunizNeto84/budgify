@@ -6,10 +6,12 @@ using Budgify.Infrastructure.Repositories;
 
 IAccountRepository accountRepository = new InMemoryAccountRepository();
 IIncomeRepository incomeRepository = new InMemoryIncomeRepository();
+IExpenseRepository expenseRepository = new InMemoryExpenseRepository();
 
 IAccountService accountService = new AccountService(accountRepository);
 IIncomeService incomeService = new IncomeService(incomeRepository);
+IExpenseService expenseService = new ExpenseService(expenseRepository);
 
 
-ConsoleUi ui = new ConsoleUi(accountService, incomeService);
+ConsoleUi ui = new ConsoleUi(accountService, incomeService, expenseService);
 ui.Run();
