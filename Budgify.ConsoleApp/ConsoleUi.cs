@@ -8,13 +8,15 @@ namespace Budgify.ConsoleApp
         private readonly IAccountService _accountService;
         private readonly IIncomeService _incomeService;
         private readonly IExpenseService _expenseService;
+        private readonly IFinancialSummaryService _financialSummaryService;
 
 
-        public ConsoleUi(IAccountService accountService, IIncomeService incomeService, IExpenseService expenseService)
+        public ConsoleUi(IAccountService accountService, IIncomeService incomeService, IExpenseService expenseService, IFinancialSummaryService financialSummaryService)
         {
             _accountService = accountService;
             _incomeService = incomeService;
             _expenseService = expenseService;
+            _financialSummaryService = financialSummaryService;
         }
 
         public void Run()
@@ -47,7 +49,20 @@ namespace Budgify.ConsoleApp
                         WaitUser();
                         break;
                     case 4:
-                        Console.WriteLine("Resumo");
+                        var summary = _financialSummaryService.GetSummary();
+                        Console.WriteLine("Resumo:");
+                        Console.WriteLine($"Total Receitas: {summary.TotalIncome:C}");
+                        Console.WriteLine($"Total Despesas: {summary.TotalExpense:C}");
+                        Console.WriteLine();
+
+                        if(summary.Balance >= 0)
+                        {
+                            Console.WriteLine($"Saldo final: {summary.Balance:C} ✅");
+                        } else
+                        {
+                            Console.WriteLine($"Saldo final: {summary.Balance:C} 🚨");
+                        }
+
                         WaitUser();
                         break;
                     case 0:

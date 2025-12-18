@@ -11,7 +11,8 @@ IExpenseRepository expenseRepository = new InMemoryExpenseRepository();
 IAccountService accountService = new AccountService(accountRepository);
 IIncomeService incomeService = new IncomeService(incomeRepository);
 IExpenseService expenseService = new ExpenseService(expenseRepository);
+IFinancialSummaryService summaryService = new FinancialSummaryService(incomeRepository, expenseRepository);
 
 
-ConsoleUi ui = new ConsoleUi(accountService, incomeService, expenseService);
+ConsoleUi ui = new ConsoleUi(accountService, incomeService, expenseService, summaryService);
 ui.Run();
