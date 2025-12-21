@@ -1,9 +1,11 @@
-﻿namespace Budgify.Domain.Entities
+﻿using Budgify.Domain.Enums;
+
+namespace Budgify.Domain.Entities
 {
-    public class Account
+    public abstract class  Account
     {
-        public Guid Id { get; set; } 
-        public string Name { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public BankName Bank { get; set; }
         public decimal Balance { get; set; }
     }
 }
