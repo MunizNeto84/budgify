@@ -1,5 +1,7 @@
 ﻿using Budgify.Application.Interfaces;
 using Budgify.Domain.Entities;
+using Budgify.Domain.Enums;
+using System.Security.Principal;
 
 namespace Budgify.Application.Services
 {
@@ -12,16 +14,30 @@ namespace Budgify.Application.Services
             _repository = repository;
         }
 
-        public void CreateAccount(string accountName, decimal initialBalance)
+        public void CreateAccount(BankName bankName, decimal initialBalance, AccountType type)
         {
-            var newAccount = new Account
-            {
-                Id = Guid.NewGuid(),
-                Name = accountName,
-                Balance = initialBalance,
-            };
+            Account newAccount;
 
-            _repository.Add(newAccount);
+
+            if (type == AccountType.Checking)
+            {
+                newAccount = new CheckingAccount
+                {
+                    Id = Guid.NewGuid(),
+                    Bank = bankName,
+                    Balance = initialBalance
+                };
+            } else
+            {
+                newAccount = new InventimentAccount
+                {
+                    Id = Guid.NewGuid(),
+                    Bank = bankName,
+                    Balance = initialBalance
+                };
+            }
+
+                _repository.Add(newAccount);
         }
 
         public List<Account> GetAllAccounts()

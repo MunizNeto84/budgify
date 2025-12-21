@@ -99,11 +99,30 @@ namespace Budgify.ConsoleApp
                 {
                     case 1:
                         Console.WriteLine("Criar conta:");
-                        Console.Write("Banco: ");
-                        string bank = Console.ReadLine()!;
+                        Console.Write("Selecione o Banco: ");
+                        foreach (var bank in Enum.GetValues<BankName>())
+                        {
+                            Console.WriteLine($"{(int)bank} - {bank}");
+                        }
+                        Console.Write("Opção: ");
+                        int bankOption = int.Parse(Console.ReadLine()!);
+
+                        BankName bankName = (BankName)bankOption;
+
                         Console.Write("Saldo Inicial: ");
                         decimal initialAmount = decimal.Parse(Console.ReadLine()!);
-                        _accountService.CreateAccount(bank, initialAmount);
+
+                        Console.Write("Selecione o tipo da conta: ");
+                        foreach (var type in Enum.GetValues<AccountType>())
+                        {
+                            Console.WriteLine($"{(int)type} - {type}");
+                        }
+                        Console.Write("Opção: ");
+                        int typeOption = int.Parse(Console.ReadLine()!);
+
+                        AccountType accountType = (AccountType)typeOption;
+
+                        _accountService.CreateAccount(bankName, initialAmount, accountType);
                         Console.WriteLine("Conta criada!");
                         WaitUser();
                         break;
@@ -117,7 +136,7 @@ namespace Budgify.ConsoleApp
                         {
                             foreach (var account in accounts)
                             {
-                                Console.WriteLine($"Conta: {account.Name} | Saldo: {account.Balance:C}");
+                                Console.WriteLine($"Conta: {account.Bank} | Saldo: {account.Balance:C}");
                             }
                         }
 
@@ -165,7 +184,7 @@ namespace Budgify.ConsoleApp
                         Console.WriteLine("Para qual conta é essa receita? \n");
                         for (int i = 0;  i < accounts.Count; i++)
                         {
-                            Console.Write($"{i} {accounts[i].Name}");
+                            Console.Write($"{i} {accounts[i].Bank}");
                         }
                         Console.WriteLine();
                         Console.Write("\nDigite o número da conta: ");
@@ -252,7 +271,7 @@ namespace Budgify.ConsoleApp
                         Console.WriteLine("Para qual conta é essa despesa? \n");
                         for (int i = 0; i < accounts.Count; i++)
                         {
-                            Console.Write($"{i} {accounts[i].Name}");
+                            Console.Write($"{i} {accounts[i].Bank}");
                         }
                         Console.WriteLine();
                         Console.Write("\nDigite o número da conta: ");
