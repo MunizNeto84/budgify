@@ -1,5 +1,7 @@
 ﻿using Budgify.Application.Interfaces;
+using Budgify.Domain.Entities;
 using Budgify.Domain.Enums;
+using System.Threading.Channels;
 
 namespace Budgify.ConsoleApp
 {
@@ -9,14 +11,16 @@ namespace Budgify.ConsoleApp
         private readonly IIncomeService _incomeService;
         private readonly IExpenseService _expenseService;
         private readonly IFinancialSummaryService _financialSummaryService;
+        private readonly ICreditCardService _creditCardService;
 
 
-        public ConsoleUi(IAccountService accountService, IIncomeService incomeService, IExpenseService expenseService, IFinancialSummaryService financialSummaryService)
+        public ConsoleUi(IAccountService accountService, IIncomeService incomeService, IExpenseService expenseService, IFinancialSummaryService financialSummaryService, ICreditCardService creditCardService)
         {
             _accountService = accountService;
             _incomeService = incomeService;
             _expenseService = expenseService;
             _financialSummaryService = financialSummaryService;
+            _creditCardService = creditCardService;
         }
 
         public void Run()
@@ -127,20 +131,68 @@ namespace Budgify.ConsoleApp
                         WaitUser();
                         break;
                     case 2:
+                        Console.WriteLine("Criar cartão:");
+                        var accountsCard = _accountService.GetAllAccounts();
+                        if(accountsCard.Count == 0)
+                        {
+                            Console.WriteLine("Crie uma conta antes!");
+                            WaitUser();
+                            break;
+                        }
+                        
+                        Console.WriteLine("Vincular cartão a qual conta?");
+                        for (int i = 0; i < accountsCard.Count; i++)
+                        {
+                            Console.Write($"{i} {accountsCard[i].Bank}");
+                        }
+                        Console.Write("\nDigite o indice da conta: ");
+                        int index = int.Parse(Console.ReadLine()!);
+                        var acc = accountsCard[index];
+
+                        Console.Write("\nApelido do cartão: ");
+                        string cardName = Console.ReadLine()!;
+
+                        Console.Write("Limite do cartão: ");
+                        int limit = int.Parse(Console.ReadLine()!);
+
+                        Console.Write("Dia do fechamento: ");
+                        int closingDay = int.Parse(Console.ReadLine()!);
+
+                        Console.Write("Dia do vencimento: ");
+                        int dueDay = int.Parse(Console.ReadLine()!);
+
+                        _creditCardService.CreateCreditCard(acc.Id, cardName, limit, closingDay, dueDay);
+
+                        Console.WriteLine("Cartão criado, com sucesso!");
+
+                        WaitUser();
+                        break;
+                    case 3:
                         Console.WriteLine("Listar conta:");
-                        var accounts = _accountService.GetAllAccounts();
-                        if(accounts.Count == 0)
+                        var accountsList = _accountService.GetAllAccounts();
+                        if (accountsList.Count == 0)
                         {
                             Console.WriteLine("Não existe conta");
-                        } else
+                        }
+                        else
                         {
-                            foreach (var account in accounts)
+                            foreach (var account in accountsList)
                             {
                                 Console.WriteLine($"Conta: {account.Bank} | Saldo: {account.Balance:C}");
+                                var cards = _creditCardService.GetByAccountId(account.Id);
+                                if(cards.Count > 0)
+                                {
+                                    foreach (var card in cards)
+                                    {
+                                        Console.WriteLine($"Cartão: {card.Name} | Limite: {card.Limit:C} | Vence dia: {card.DueDay}");
+                                    }
+                                } else
+                                {
+                                    Console.WriteLine("Não há cartões vinculados");
+                                }
                             }
                         }
-
-                            WaitUser();
+                        WaitUser();
                         break;
                     case 0:
                         break;
@@ -347,7 +399,8 @@ namespace Budgify.ConsoleApp
             Console.WriteLine("==================== CONTA ====================");
             Console.WriteLine("===============================================");
             Console.WriteLine("1 - Criar Conta");
-            Console.WriteLine("2 - Listar Conta(s)\n");
+            Console.WriteLine("2 - Criar Cartão");
+            Console.WriteLine("3 - Listar Conta(s)\n");
             Console.WriteLine("0 - Voltar");
             Console.WriteLine("===============================================");
         }
