@@ -7,14 +7,25 @@ namespace Budgify.Application.Services
     public class IncomeService : IIncomeService
     {
         public readonly IIncomeRepository _repository;
+        public readonly IAccountRepository _accountRepository;
 
-        public IncomeService(IIncomeRepository repository)
+        public IncomeService(IIncomeRepository repository, IAccountRepository accountRepository)
         {
-            _repository = repository; 
+            _repository = repository;
+            _accountRepository = accountRepository;
         }
 
         public void CreateIncome(Guid accountId, decimal amount, DateTime date, IncomeCategory category, string description)
         {
+            var account = _accountRepository.GetById(accountId);
+            if (account == null)
+            {
+                throw new Exception("Não há conta cadastrada. Impossivel vincular receita.");
+            }
+
+            account.Deposit(amount);
+            _accountRepository.Update(account);
+
             var newIncome = new Income
             {
                 AccountId = accountId,
