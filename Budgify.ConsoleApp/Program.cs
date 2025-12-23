@@ -10,8 +10,8 @@ IExpenseRepository expenseRepository = new InMemoryExpenseRepository();
 ICreditCardRepository cardRepository = new InMemoryCreditCardRepository();
 
 IAccountService accountService = new AccountService(accountRepository);
-IIncomeService incomeService = new IncomeService(incomeRepository);
-IExpenseService expenseService = new ExpenseService(expenseRepository);
+IIncomeService incomeService = new IncomeService(incomeRepository, accountRepository);
+IExpenseService expenseService = new ExpenseService(expenseRepository, accountRepository);
 IFinancialSummaryService summaryService = new FinancialSummaryService(incomeRepository, expenseRepository);
 ICreditCardService cardService = new CreditCardService(cardRepository);
 

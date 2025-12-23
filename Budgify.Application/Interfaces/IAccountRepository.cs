@@ -7,5 +7,9 @@ namespace Budgify.Application.Interfaces
         public void Add(Account account);
 
         List<Account> GetAll();
+
+        Account? GetById(Guid id);
+
+        public void Update(Account account);
     }
 }
