@@ -21,7 +21,8 @@ namespace Budgify.Application.Services
                 Name = name,
                 Limit = limit,
                 ClosingDay = closingDay,
-                DueDay = dueDay
+                DueDay = dueDay,
+                AvailableLimit = limit
             };
 
             _repository.Add(newCard);

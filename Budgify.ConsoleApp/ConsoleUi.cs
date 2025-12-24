@@ -262,6 +262,7 @@ namespace Budgify.ConsoleApp
                         _incomeService.CreateIncome(selectedAccount.Id, amount, DateTime.Now, category, description);
                         
                         Console.WriteLine("Receita lançada no sistema!");
+
                         WaitUser();
                         break;
                     case 2:
@@ -320,61 +321,139 @@ namespace Budgify.ConsoleApp
                         }
 
                         Console.WriteLine("Lançar Despesa:");
-                        Console.WriteLine("Para qual conta é essa despesa? \n");
-                        for (int i = 0; i < accounts.Count; i++)
+                        Console.WriteLine("1 - Debito");
+                        Console.WriteLine("2 - Credito");
+
+                        option = int.Parse(Console.ReadLine()!);
+
+                        if (option == 1)
                         {
-                            Console.Write($"{i} {accounts[i].Bank}");
-                        }
-                        Console.WriteLine();
-                        Console.Write("\nDigite o número da conta: ");
-                        int index = int.Parse(Console.ReadLine()!);
-                        var selectedAccount = accounts[index];
+                            Console.WriteLine("Para qual conta é essa despesa? \n");
+                            for (int i = 0; i < accounts.Count; i++)
+                            {
+                                Console.Write($"{i} {accounts[i].Bank}");
+                            }
+                            Console.WriteLine();
+                            Console.Write("\nDigite o número da conta: ");
+                            int index = int.Parse(Console.ReadLine()!);
+                            var selectedAccount = accounts[index];
 
-                        Console.Write("Descrição: ");
-                        string description = Console.ReadLine()!;
+                            Console.Write("Descrição: ");
+                            string description = Console.ReadLine()!;
 
-                        Console.Write("Valor: ");
-                        decimal amount = decimal.Parse(Console.ReadLine()!);
+                            Console.Write("Valor: ");
+                            decimal amount = decimal.Parse(Console.ReadLine()!);
 
-                        Console.WriteLine("\nSelecione a categoria:");
-                        foreach (var cat in Enum.GetValues<ExpenseCategory>())
+                            Console.WriteLine("\nSelecione a categoria:");
+                            foreach (var cat in Enum.GetValues<ExpenseCategory>())
+                            {
+                                Console.WriteLine($"{(int)cat} - {cat}");
+                            }
+                            Console.Write("Opção: ");
+                            int catOption = int.Parse(Console.ReadLine()!);
+
+                            ExpenseCategory category = (ExpenseCategory)catOption;
+
+                            _expenseService.CreateExpense(selectedAccount.Id, amount, DateTime.Now, category, description);
+
+                            Console.WriteLine("Despesa lançada no sistema!");
+                            WaitUser();
+                            break;
+                        } else if (option == 2)
                         {
-                            Console.WriteLine($"{(int)cat} - {cat}");
-                        }
-                        Console.Write("Opção: ");
-                        int catOption = int.Parse(Console.ReadLine()!);
+                            Console.WriteLine("Para qual conta é essa despesa? \n");
+                            for (int i = 0; i < accounts.Count; i++)
+                            {
+                                Console.Write($"{i} {accounts[i].Bank}");
+                            }
+                            Console.WriteLine();
+                            Console.Write("\nDigite o número da conta: ");
+                            int indexAccount = int.Parse(Console.ReadLine()!);
+                            var selectedCardAccount = accounts[indexAccount];
+                            var cardAccountId = accounts[indexAccount].Id;
 
-                        ExpenseCategory category = (ExpenseCategory)catOption;
+                            var cards = _creditCardService.GetByAccountId(cardAccountId);
+                            Console.WriteLine("Para qual cartão é essa despesa? \n");
+                            if (cards.Count > 0)
+                            {
+                                for (int i = 0; i < cards.Count; i++)
+                                {
+                                    Console.Write($"{i} {cards[i].Name} | Limite disponivél: {cards[i].AvailableLimit}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Não há cartões vinculados");
+                            }
+                            Console.Write("\nDigite o número do cartão: ");
+                            int indexCard = int.Parse(Console.ReadLine()!);
+                            var selectedCard = cards[indexCard];
 
-                        _expenseService.CreateExpense(selectedAccount.Id, amount, DateTime.Now, category, description);
 
-                        Console.WriteLine("Despesa lançada no sistema!");
-                        WaitUser();
-                        break;
-                    case 2:
-                        Console.WriteLine("Listar despesas lançadas:");
-                        var expenses = _expenseService.GetAllExpenses();
-                        if (expenses.Count == 0)
-                        {
-                            Console.WriteLine("Não existe despesas lançadas");
+                            Console.Write("Descrição: ");
+                            string descriptionCard = Console.ReadLine()!;
+
+                            Console.Write("Valor: ");
+                            decimal amountCard = decimal.Parse(Console.ReadLine()!);
+
+                            Console.Write("Quantas parcelas: ");
+                            int installments = int.Parse(Console.ReadLine()!);
+
+
+                            Console.WriteLine("\nSelecione a categoria:");
+                            foreach (var cat in Enum.GetValues<ExpenseCategory>())
+                            {
+                                Console.WriteLine($"{(int)cat} - {cat}");
+                            }
+                            Console.Write("Opção: ");
+                            int catCardOption = int.Parse(Console.ReadLine()!);
+
+                            ExpenseCategory categoryCard = (ExpenseCategory)catCardOption;
+
+                            _expenseService.CreateCardExpense(selectedCard.Id, amountCard, installments, categoryCard, descriptionCard);
+
+                            Console.WriteLine("Despesa do cartão de credito lançada no sistema!");
+                            WaitUser();
+                            break;
                         }
                         else
                         {
-                            foreach (var expense in expenses)
-                            {
-                                Console.WriteLine($"{expense.Date.ToShortDateString()} | {expense.Description} | {expense.Amount:C} | ({expense.Category})");
-                            }
+                            Console.WriteLine("Opção inválida.");
                         }
+                        WaitUser();
+                        break;
 
-                        WaitUser();
-                        break;
-                    case 0:
-                        break;
-                    default:
-                        Console.WriteLine("Opção inválida.");
-                        WaitUser();
-                        break;
-                }
+
+
+
+                    case 2:
+                                Console.WriteLine("Listar despesas lançadas:");
+                                var expenses = _expenseService.GetAllExpenses();
+                                if (expenses.Count == 0)
+                                {
+                                    Console.WriteLine("Não existe despesas lançadas");
+                                }
+                                else
+                                {
+                                    foreach (var expense in expenses)
+                                    {
+                                        Console.WriteLine($"{expense.Date.ToShortDateString()} | {expense.Description} | {expense.Amount:C} | ({expense.Category})");
+                                    }
+                                }
+
+                                WaitUser();
+                                break;
+                            case 0:
+                                break;
+                            default:
+                                Console.WriteLine("Opção inválida.");
+                                WaitUser();
+                                break;
+
+
+
+
+                            }
 
 
             } while (option != 0);

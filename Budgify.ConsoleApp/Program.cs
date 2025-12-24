@@ -11,7 +11,7 @@ ICreditCardRepository cardRepository = new InMemoryCreditCardRepository();
 
 IAccountService accountService = new AccountService(accountRepository);
 IIncomeService incomeService = new IncomeService(incomeRepository, accountRepository);
-IExpenseService expenseService = new ExpenseService(expenseRepository, accountRepository);
+IExpenseService expenseService = new ExpenseService(expenseRepository, accountRepository, cardRepository);
 IFinancialSummaryService summaryService = new FinancialSummaryService(incomeRepository, expenseRepository);
 ICreditCardService cardService = new CreditCardService(cardRepository);
 
