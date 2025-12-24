@@ -8,11 +8,13 @@ namespace Budgify.Application.Services
     {
         public readonly IExpenseRepository _repository;
         public readonly IAccountRepository _accountRepository;
+        public readonly ICreditCardRepository _creditCardRepository;
 
-        public ExpenseService(IExpenseRepository repository, IAccountRepository accountRepository)
+        public ExpenseService(IExpenseRepository repository, IAccountRepository accountRepository, ICreditCardRepository creditCardRepository)
         {
             _repository = repository;
             _accountRepository = accountRepository;
+            _creditCardRepository = creditCardRepository;
         }
 
         public void CreateExpense(Guid accountId, decimal amount, DateTime date, ExpenseCategory category, string description)
@@ -37,6 +39,38 @@ namespace Budgify.Application.Services
             };
 
             _repository.Add(newExpense);
+        }
+
+        public void CreateCardExpense(Guid cardId, decimal amount, int installments, ExpenseCategory category, string description)
+        {
+            var card = _creditCardRepository.GetById(cardId);
+            if (card == null)
+            {
+                throw new Exception("Cartão não encontrado");
+            }
+
+            card.Purchase(amount);
+            _creditCardRepository.Update(card);
+
+            decimal installmentValue = amount / installments;
+
+            for (int i = 0; i < installments; i++)
+            {
+                var expense = new Expense
+                {
+                    Id = Guid.NewGuid(),
+                    AccountId = card.AccountId,
+                    CreditCardId = card.Id,
+                    Amount = installmentValue,
+                    Date = DateTime.Now.AddMonths(i),
+                    Category = category,
+                    Description = $"{description} ({i + 1}/{installments})",
+                    CurrentInstallment = i + 1,
+                    TotalInstallments = installments
+                };
+
+                _repository.Add(expense);
+            }
         }
 
         public List<Expense> GetAllExpenses()

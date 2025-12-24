@@ -16,5 +16,19 @@ namespace Budgify.Infrastructure.Repositories
         {
             return _cards.Where(card => card.AccountId == accountId).ToList(); 
         }
+
+        public CreditCard? GetById(Guid id)
+        {
+            return _cards.FirstOrDefault(card => card.Id == id);
+        }
+
+        public void Update(CreditCard creditCard)
+        {
+            var index = _cards.FindIndex(card => card.Id == creditCard.Id);
+            if (index != -1)
+            {
+                _cards[index] = creditCard;
+            }
+        }
     }
 }
