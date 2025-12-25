@@ -46,8 +46,7 @@ namespace Budgify.ConsoleApp
                         new AccountMenuScreen(_accountService, _creditCardService).Show();
                         break;
                     case 2:
-                        HandleIncomeMenu();
-                        WaitUser();
+                        new IncomeMenuScreen(_accountService, _incomeService).Show();
                         break;
                     case 3:
                         HandleExpenseMenu();
@@ -82,96 +81,6 @@ namespace Budgify.ConsoleApp
 
             } while (option != 0);
 
-        }
-
-        
-
-        private void HandleIncomeMenu()
-        {
-            int option = -1;
-            do
-            {
-                ShowIncomeMenu();
-                Console.Write("\nDigite uma opção: ");
-                var input = Console.ReadLine()!;
-                if (!int.TryParse(input, out option))
-                {
-                    option = -1;
-                }
-
-                Console.Clear();
-
-                switch (option)
-                {
-                    case 1:
-                        var accounts = _accountService.GetAllAccounts();
-                        if (accounts.Count == 0)
-                        {
-                            Console.WriteLine("Você precisa criar uma conta antes");
-                            WaitUser();
-                            break;
-                        }
-
-                        Console.WriteLine("Lançar Receita:");
-                        Console.WriteLine("Para qual conta é essa receita? \n");
-                        for (int i = 0;  i < accounts.Count; i++)
-                        {
-                            Console.Write($"{i} {accounts[i].Bank}");
-                        }
-                        Console.WriteLine();
-                        Console.Write("\nDigite o número da conta: ");
-                        int index = int.Parse(Console.ReadLine()!);
-                        var selectedAccount = accounts[index];
-
-                        Console.Write("Descrição: ");
-                        string description = Console.ReadLine()!;
-
-                        Console.Write("Valor: ");
-                        decimal amount = decimal.Parse(Console.ReadLine()!);
-
-                        Console.WriteLine("\nSelecione a categoria:");
-                        foreach (var cat in Enum.GetValues<IncomeCategory>())
-                        {
-                            Console.WriteLine($"{(int)cat} - {cat}");
-                        }
-                        Console.Write("Opção: ");
-                        int catOption = int.Parse(Console.ReadLine()!);
-
-                        IncomeCategory category = (IncomeCategory)catOption;
-
-                        _incomeService.CreateIncome(selectedAccount.Id, amount, DateTime.Now, category, description);
-                        
-                        Console.WriteLine("Receita lançada no sistema!");
-
-                        WaitUser();
-                        break;
-                    case 2:
-                        Console.WriteLine("Listar receitas lançadas:");
-                        var incomes = _incomeService.GetAllIncomes();
-                        if (incomes.Count == 0)
-                        {
-                            Console.WriteLine("Não existe receitas lançadas");
-                        }
-                        else
-                        {
-                            foreach (var income in incomes)
-                            {
-                                Console.WriteLine($"{income.Date.ToShortDateString()} | {income.Description} | {income.Amount:C} | ({income.Category})");
-                            }
-                        }
-
-                        WaitUser();
-                        break;
-                    case 0:
-                        break;
-                    default:
-                        Console.WriteLine("Opção inválida.");
-                        WaitUser();
-                        break;
-                }
-
-
-            } while (option != 0);
         }
 
         private void HandleExpenseMenu()
@@ -400,16 +309,7 @@ namespace Budgify.ConsoleApp
 
          
 
-        private void ShowIncomeMenu()
-        {
-            Console.WriteLine("===============================================");
-            Console.WriteLine("==================== INCOME ===================");
-            Console.WriteLine("===============================================");
-            Console.WriteLine("1 - Lançar Receita");
-            Console.WriteLine("2 - Listar receitas(s)\n");
-            Console.WriteLine("0 - Voltar");
-            Console.WriteLine("===============================================");
-        }
+       
 
         private void ShowExpenseMenu()
         {
