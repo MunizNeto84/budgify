@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.Infrastructure", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.ConsoleApp", "Budgify.ConsoleApp\Budgify.ConsoleApp.csproj", "{1C863DD5-59CE-4BA0-89F8-BDB48CF2BF15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify.UnitTests", "Budgify.UnitTests\Budgify.UnitTests.csproj", "{EF9CCE47-4BA6-4C06-A59A-9FFC64041FDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{1C863DD5-59CE-4BA0-89F8-BDB48CF2BF15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C863DD5-59CE-4BA0-89F8-BDB48CF2BF15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C863DD5-59CE-4BA0-89F8-BDB48CF2BF15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF9CCE47-4BA6-4C06-A59A-9FFC64041FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF9CCE47-4BA6-4C06-A59A-9FFC64041FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF9CCE47-4BA6-4C06-A59A-9FFC64041FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF9CCE47-4BA6-4C06-A59A-9FFC64041FDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
