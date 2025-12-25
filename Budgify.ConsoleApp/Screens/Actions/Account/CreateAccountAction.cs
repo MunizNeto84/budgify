@@ -33,7 +33,7 @@ namespace Budgify.ConsoleApp.Screens.Actions.Account
 
             } catch (Exception ex)
             {
-                Console.WriteLine("\n❌ Erro ao criar conta.");
+                Console.WriteLine($"\n❌ Erro ao criar conta. {ex}");
                 WaitUser();
             }
         }
