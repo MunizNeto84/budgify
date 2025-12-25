@@ -6,10 +6,14 @@ namespace Budgify.Application.Services
     public class CreditCardService : ICreditCardService
     {
         public readonly ICreditCardRepository _repository;
-        
-        public CreditCardService(ICreditCardRepository repository)
+        public readonly IAccountRepository _accountRepository;
+        public readonly IExpenseRepository _expensesRepository;
+
+        public CreditCardService(ICreditCardRepository repository, IAccountRepository accountRepository, IExpenseRepository expenseRepository)
         {
-            _repository = repository; 
+            _repository = repository;
+            _accountRepository = accountRepository;
+            _expensesRepository = expenseRepository;
         }
 
         public void CreateCreditCard(Guid accountId, string name, decimal limit, int closingDay, int dueDay)
@@ -26,6 +30,36 @@ namespace Budgify.Application.Services
             };
 
             _repository.Add(newCard);
+        }
+
+        public void PayInvoice(Guid cardId)
+        {
+
+            var card = _repository.GetById(cardId);
+            if (card == null) throw new Exception("Cartão não encontrado");
+
+            var today = DateTime.Now;
+
+            DateTime closingDate = new DateTime(today.Year, today.Month, card.ClosingDay);
+
+            var account = _accountRepository.GetById(card.AccountId);
+
+            var expenses = _expensesRepository.GetUnpaidExpensesByCard(cardId, closingDate);
+            if (expenses.Count == 0) throw new Exception("Nenhuma fatura aberta ou vencida para pagar!");
+
+            decimal totalInvoice = expenses.Sum(e => e.Amount);
+
+            account.Withdraw(totalInvoice);
+            _accountRepository.Update(account);
+
+            card.RestoreLimit(totalInvoice);
+            _repository.Update(card);
+
+            foreach(var expense in expenses)
+            {
+                expense.Paid = true;
+            }
+
         }
 
 

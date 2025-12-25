@@ -9,5 +9,6 @@ namespace Budgify.Application.Interfaces
         public void CreateCardExpense(Guid cardId, decimal amount, int installments, ExpenseCategory category, string description);
 
         List<Expense> GetAllExpenses();
+        List<Expense> GetUnpaidExpensesByCard(Guid cardId, DateTime limitDate);
     }
 }
