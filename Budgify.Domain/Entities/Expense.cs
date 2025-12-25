@@ -13,6 +13,6 @@ namespace Budgify.Domain.Entities
         public string Description { get; set; } = string.Empty;
         public int CurrentInstallment { get; set; }
         public int TotalInstallments { get; set; }
-
+        public bool Paid { get; set; }
     }
 }

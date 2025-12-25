@@ -425,35 +425,81 @@ namespace Budgify.ConsoleApp
 
 
 
-
                     case 2:
-                                Console.WriteLine("Listar despesas lançadas:");
-                                var expenses = _expenseService.GetAllExpenses();
-                                if (expenses.Count == 0)
+                                var accountsCard = _accountService.GetAllAccounts();
+                                if (accountsCard.Count == 0)
                                 {
-                                    Console.WriteLine("Não existe despesas lançadas");
+                                    Console.WriteLine("Você precisa criar uma conta antes");
+                                    WaitUser();
+                                    break;
+                                }
+                        Console.WriteLine("Pagar fatura do cartão:");
+                                Console.WriteLine("Para qual conta é essa despesa? \n");
+                                for (int i = 0; i < accountsCard.Count; i++)
+                                {
+                                    Console.Write($"{i} {accountsCard[i].Bank}");
+                                }
+                                Console.WriteLine();
+                                Console.Write("\nDigite o número da conta: ");
+                                int indexAccount2 = int.Parse(Console.ReadLine()!);
+                                var selectedCardAccount2 = accountsCard[indexAccount2];
+                                var cardAccountId2 = accountsCard[indexAccount2].Id;
+
+                                var cards2 = _creditCardService.GetByAccountId(cardAccountId2);
+                                Console.WriteLine("Para qual cartão é vai pagar a fatura? \n");
+                                if (cards2.Count > 0)
+                                {
+                                    for (int i = 0; i < cards2.Count; i++)
+                                    {
+                                        Console.Write($"{i} {cards2[i].Name} | Limite disponivél: {cards2[i].AvailableLimit}");
+                                    }
                                 }
                                 else
                                 {
-                                    foreach (var expense in expenses)
-                                    {
-                                        Console.WriteLine($"{expense.Date.ToShortDateString()} | {expense.Description} | {expense.Amount:C} | ({expense.Category})");
-                                    }
+                                    Console.WriteLine("Não há cartões vinculados");
                                 }
+                                Console.Write("\nDigite o número do cartão: ");
+                                int indexCard2 = int.Parse(Console.ReadLine()!);
+                                var selectedCard2 = cards2[indexCard2];
+                        _creditCardService.PayInvoice(selectedCard2.Id);
 
-                                WaitUser();
-                                break;
-                            case 0:
-                                break;
-                            default:
-                                Console.WriteLine("Opção inválida.");
-                                WaitUser();
-                                break;
+                        
 
+                        Console.WriteLine("Fatura paga");
 
 
-
+                        WaitUser();
+                        break;
+                                
+                           
+                    case 3:
+                        Console.WriteLine("Listar despesas lançadas:");
+                        var expenses = _expenseService.GetAllExpenses();
+                        if (expenses.Count == 0)
+                        {
+                            Console.WriteLine("Não existe despesas lançadas");
+                        }
+                        else
+                        {
+                            foreach (var expense in expenses)
+                            {
+                                Console.WriteLine($"{expense.Date.ToShortDateString()} | {expense.Description} | {expense.Amount:C} | ({expense.Category})");
                             }
+                        }
+
+                        WaitUser();
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida.");
+                        WaitUser();
+                        break;
+
+
+
+
+                }
 
 
             } while (option != 0);
@@ -500,8 +546,9 @@ namespace Budgify.ConsoleApp
             Console.WriteLine("===============================================");
             Console.WriteLine("==================== EXPENSE ==================");
             Console.WriteLine("===============================================");
-            Console.WriteLine("1 - Lançar Despesa");
-            Console.WriteLine("2 - Listar despesas(s)\n");
+            Console.WriteLine("1 - Lançar despesa");
+            Console.WriteLine("2 - Pagar fatura do cartão");
+            Console.WriteLine("3 - Listar despesas(s)\n");
             Console.WriteLine("0 - Voltar");
             Console.WriteLine("===============================================");
         }

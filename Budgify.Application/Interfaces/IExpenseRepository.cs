@@ -6,5 +6,6 @@ namespace Budgify.Application.Interfaces
     {
         public void Add(Expense expense);
         List<Expense> GetAll();
+        List<Expense> GetUnpaidExpensesByCard(Guid cardId, DateTime limitDate);
     }
 }

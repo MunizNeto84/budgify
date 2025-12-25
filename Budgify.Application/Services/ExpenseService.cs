@@ -35,7 +35,8 @@ namespace Budgify.Application.Services
                 Amount = amount,
                 Date = date,
                 Category = category,
-                Description = description
+                Description = description,
+                Paid = true
             };
 
             _repository.Add(newExpense);
@@ -66,7 +67,8 @@ namespace Budgify.Application.Services
                     Category = category,
                     Description = $"{description} ({i + 1}/{installments})",
                     CurrentInstallment = i + 1,
-                    TotalInstallments = installments
+                    TotalInstallments = installments,
+                    Paid = false
                 };
 
                 _repository.Add(expense);
@@ -76,6 +78,11 @@ namespace Budgify.Application.Services
         public List<Expense> GetAllExpenses()
         {
             return _repository.GetAll();
+        }
+
+        public List<Expense> GetUnpaidExpensesByCard(Guid cardId, DateTime limitDate)
+        {
+            return _repository.GetUnpaidExpensesByCard(cardId, limitDate);
         }
     }
 }

@@ -15,5 +15,10 @@ namespace Budgify.Infrastructure.Repositories
         {
             return _expenses; 
         }
+
+        public List<Expense> GetUnpaidExpensesByCard(Guid cardId, DateTime limitDate)
+        {
+            return _expenses.Where(e => e.CreditCardId == cardId && e.Paid == false && e.Date <= limitDate).ToList();
+        }
     }
 }

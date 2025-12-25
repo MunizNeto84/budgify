@@ -25,5 +25,18 @@
 
         }
 
+        public void RestoreLimit (decimal amount)
+        {
+            if (amount <= 0)
+            {
+                throw new Exception("Valor deve ser positivo!");
+            }
+            if (amount + AvailableLimit > Limit)
+            {
+                throw new Exception("Valor maior que o Limite");
+            }
+            AvailableLimit += amount;
+        }
+
     }
 }
