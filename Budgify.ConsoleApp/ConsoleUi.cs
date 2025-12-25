@@ -1,7 +1,8 @@
 ﻿using Budgify.Application.Interfaces;
+using Budgify.ConsoleApp.Screens;
 using Budgify.Domain.Entities;
 using Budgify.Domain.Enums;
-using System.Threading.Channels;
+
 
 namespace Budgify.ConsoleApp
 {
@@ -42,7 +43,7 @@ namespace Budgify.ConsoleApp
                 switch (option)
                 {
                     case 1:
-                        HandleAccountMenu();
+                        new AccountMenuScreen(_accountService, _creditCardService).Show();
                         break;
                     case 2:
                         HandleIncomeMenu();
@@ -83,128 +84,7 @@ namespace Budgify.ConsoleApp
 
         }
 
-        private void HandleAccountMenu()
-        {
-
-            int option = -1;
-            do
-            {
-                ShowAccountMenu();
-                Console.Write("\nDigite uma opção: ");
-                var input = Console.ReadLine()!;
-                if (!int.TryParse(input, out option))
-                {
-                    option = -1;
-                }
-
-                Console.Clear();
-
-                switch (option)
-                {
-                    case 1:
-                        Console.WriteLine("Criar conta:");
-                        Console.Write("Selecione o Banco: ");
-                        foreach (var bank in Enum.GetValues<BankName>())
-                        {
-                            Console.WriteLine($"{(int)bank} - {bank}");
-                        }
-                        Console.Write("Opção: ");
-                        int bankOption = int.Parse(Console.ReadLine()!);
-
-                        BankName bankName = (BankName)bankOption;
-
-                        Console.Write("Saldo Inicial: ");
-                        decimal initialAmount = decimal.Parse(Console.ReadLine()!);
-
-                        Console.Write("Selecione o tipo da conta: ");
-                        foreach (var type in Enum.GetValues<AccountType>())
-                        {
-                            Console.WriteLine($"{(int)type} - {type}");
-                        }
-                        Console.Write("Opção: ");
-                        int typeOption = int.Parse(Console.ReadLine()!);
-
-                        AccountType accountType = (AccountType)typeOption;
-
-                        _accountService.CreateAccount(bankName, initialAmount, accountType);
-                        Console.WriteLine("Conta criada!");
-                        WaitUser();
-                        break;
-                    case 2:
-                        Console.WriteLine("Criar cartão:");
-                        var accountsCard = _accountService.GetAllAccounts();
-                        if(accountsCard.Count == 0)
-                        {
-                            Console.WriteLine("Crie uma conta antes!");
-                            WaitUser();
-                            break;
-                        }
-                        
-                        Console.WriteLine("Vincular cartão a qual conta?");
-                        for (int i = 0; i < accountsCard.Count; i++)
-                        {
-                            Console.Write($"{i} {accountsCard[i].Bank}");
-                        }
-                        Console.Write("\nDigite o indice da conta: ");
-                        int index = int.Parse(Console.ReadLine()!);
-                        var acc = accountsCard[index];
-
-                        Console.Write("\nApelido do cartão: ");
-                        string cardName = Console.ReadLine()!;
-
-                        Console.Write("Limite do cartão: ");
-                        int limit = int.Parse(Console.ReadLine()!);
-
-                        Console.Write("Dia do fechamento: ");
-                        int closingDay = int.Parse(Console.ReadLine()!);
-
-                        Console.Write("Dia do vencimento: ");
-                        int dueDay = int.Parse(Console.ReadLine()!);
-
-                        _creditCardService.CreateCreditCard(acc.Id, cardName, limit, closingDay, dueDay);
-
-                        Console.WriteLine("Cartão criado, com sucesso!");
-
-                        WaitUser();
-                        break;
-                    case 3:
-                        Console.WriteLine("Listar conta:");
-                        var accountsList = _accountService.GetAllAccounts();
-                        if (accountsList.Count == 0)
-                        {
-                            Console.WriteLine("Não existe conta");
-                        }
-                        else
-                        {
-                            foreach (var account in accountsList)
-                            {
-                                Console.WriteLine($"Conta: {account.Bank} | Saldo: {account.Balance:C}");
-                                var cards = _creditCardService.GetByAccountId(account.Id);
-                                if(cards.Count > 0)
-                                {
-                                    foreach (var card in cards)
-                                    {
-                                        Console.WriteLine($"Cartão: {card.Name} | Limite: {card.Limit:C} | Vence dia: {card.DueDay}");
-                                    }
-                                } else
-                                {
-                                    Console.WriteLine("Não há cartões vinculados");
-                                }
-                            }
-                        }
-                        WaitUser();
-                        break;
-                    case 0:
-                        break;
-                    default :
-                        Console.WriteLine("Opção inválida.");
-                        WaitUser();
-                        break;
-                }
-
-
-            } while (option != 0);
-         }
+        
 
         private void HandleIncomeMenu()
         {
@@ -518,17 +398,7 @@ namespace Budgify.ConsoleApp
             Console.WriteLine("===============================================");
         }
 
-        private void ShowAccountMenu()
-        {
-            Console.WriteLine("===============================================");
-            Console.WriteLine("==================== CONTA ====================");
-            Console.WriteLine("===============================================");
-            Console.WriteLine("1 - Criar Conta");
-            Console.WriteLine("2 - Criar Cartão");
-            Console.WriteLine("3 - Listar Conta(s)\n");
-            Console.WriteLine("0 - Voltar");
-            Console.WriteLine("===============================================");
-        }
+         
 
         private void ShowIncomeMenu()
         {
