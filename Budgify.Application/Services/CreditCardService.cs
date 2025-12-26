@@ -38,19 +38,17 @@ namespace Budgify.Application.Services
             var card = _repository.GetById(cardId);
             if (card == null) throw new Exception("Cartão não encontrado");
 
-            var today = DateTime.Now;
-
-            DateTime closingDate = new DateTime(today.Year, today.Month, card.ClosingDay);
+            DateTime paymentCutoff = DateTime.Now;
 
             var account = _accountRepository.GetById(card.AccountId);
 
-            var expenses = _expensesRepository.GetUnpaidExpensesByCard(cardId, closingDate);
-            if (expenses.Count == 0) throw new Exception("Nenhuma fatura aberta ou vencida para pagar!");
+            var expenses = _expensesRepository.GetUnpaidExpensesByCard(cardId, paymentCutoff);
+            if (expenses.Count == 0) throw new Exception("❌ Nenhuma fatura aberta ou vencida para pagar!");
 
             decimal totalInvoice = expenses.Sum(e => e.Amount);
 
-            account.Withdraw(totalInvoice);
-            _accountRepository.Update(account);
+            account?.Withdraw(totalInvoice);
+            _accountRepository.Update(account!);
 
             card.RestoreLimit(totalInvoice);
             _repository.Update(card);

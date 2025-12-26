@@ -59,9 +59,21 @@ namespace Budgify.ConsoleApp.Screens.Actions.CreditCard
                 return;
             }
             var selectCard = cards[index];
-            _creditCardService.PayInvoice(selectCard.Id);
 
-            Console.WriteLine("\n✅ Fatura paga com sucesso.");
+
+            try
+            {
+                Console.WriteLine("⌛ Processamento pagamento das faturas ...");
+                _creditCardService.PayInvoice(selectCard.Id);
+                Console.WriteLine("\n✅ Fatura paga com sucesso.");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"⚠️ Não foi possivel realizar o pagamento da fatura: {ex.Message}");
+            }
+
+            
             WaitUser();
         }
     }
