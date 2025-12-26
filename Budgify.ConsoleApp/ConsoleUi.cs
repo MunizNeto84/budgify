@@ -50,24 +50,9 @@ namespace Budgify.ConsoleApp
                         break;
                     case 3:
                         new ExpenseMenuScreen(_accountService, _expenseService, _creditCardService).Show();
-                        WaitUser();
                         break;
                     case 4:
-                        var summary = _financialSummaryService.GetSummary();
-                        Console.WriteLine("Resumo:");
-                        Console.WriteLine($"Total Receitas: {summary.TotalIncome:C}");
-                        Console.WriteLine($"Total Despesas: {summary.TotalExpense:C}");
-                        Console.WriteLine();
-
-                        if(summary.Balance >= 0)
-                        {
-                            Console.WriteLine($"Saldo final: {summary.Balance:C} ✅");
-                        } else
-                        {
-                            Console.WriteLine($"Saldo final: {summary.Balance:C} 🚨");
-                        }
-
-                        WaitUser();
+                        new SummaryMenuScreen(_financialSummaryService).Show();
                         break;
                     case 0:
                         Console.WriteLine("Saindo [...]");
