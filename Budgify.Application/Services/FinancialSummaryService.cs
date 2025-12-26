@@ -23,14 +23,17 @@ namespace Budgify.Application.Services
             var account = _accountRepository.GetAll();
 
             decimal totalIncome = incomes.Sum(i => i.Amount);
-            decimal totalExpense = expenses.Sum(e => e.Amount);
-
+            decimal totalExpense = expenses.Where(e => e.Paid).Sum(e => e.Amount);
+            decimal totalPaidCard =  expenses.Where(e => e.CreditCardId != null && e.Paid).Sum(e => e.Amount);
+            decimal totalPendingCard = expenses.Where(e => e.CreditCardId != null && !e.Paid).Sum(e => e.Amount);
             decimal currentBalance = account.Sum(a => a.Balance);
 
             return new FinancialSummaryDto
             {
                 TotalIncome = totalIncome,
                 TotalExpense = totalExpense,
+                TotalPaidCreditCard = totalPaidCard,
+                TotalPendingCreditCard = totalPendingCard,
                 Balance = currentBalance
             };
         }

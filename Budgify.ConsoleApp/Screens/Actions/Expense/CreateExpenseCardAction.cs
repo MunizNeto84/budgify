@@ -57,7 +57,7 @@ namespace Budgify.ConsoleApp.Screens.Actions.Expense
             }
 
             index = ReadInt("🔢 Digite a opção");
-            if (index < 0 || index >= accounts.Count)
+            if (index < 0 || index >= cards.Count)
             {
                 Console.WriteLine("❌ Índice inválido.");
                 WaitUser();
