@@ -1,12 +1,9 @@
 ﻿using Budgify.Application.Interfaces;
-using Budgify.ConsoleApp.Screens;
-using Budgify.Domain.Entities;
-using Budgify.Domain.Enums;
+using Budgify.ConsoleApp.Entities;
 
-
-namespace Budgify.ConsoleApp
+namespace Budgify.ConsoleApp.Screens
 {
-    public class ConsoleUi
+    public class MainMenuScreen: BaseScreen
     {
         private readonly IAccountService _accountService;
         private readonly IIncomeService _incomeService;
@@ -14,8 +11,7 @@ namespace Budgify.ConsoleApp
         private readonly IFinancialSummaryService _financialSummaryService;
         private readonly ICreditCardService _creditCardService;
 
-
-        public ConsoleUi(IAccountService accountService, IIncomeService incomeService, IExpenseService expenseService, IFinancialSummaryService financialSummaryService, ICreditCardService creditCardService)
+        public MainMenuScreen(IAccountService accountService, IIncomeService incomeService, IExpenseService expenseService, IFinancialSummaryService financialSummaryService, ICreditCardService creditCardService)
         {
             _accountService = accountService;
             _incomeService = incomeService;
@@ -30,15 +26,17 @@ namespace Budgify.ConsoleApp
 
             do
             {
-                ShowMenu();
-                Console.Write("\nDigite uma opção: ");
-                var input = Console.ReadLine()!;
-                if(!int.TryParse(input, out option))
-                {
-                    option = -1;
-                }
+                Console.WriteLine("===============================================");
+                Console.WriteLine("================= 💰 BUDGIFY ==================");
+                Console.WriteLine("===============================================");
+                Console.WriteLine("1 - 👥 Conta");
+                Console.WriteLine("2 - 💲 Receita");
+                Console.WriteLine("3 - 💸 Despesa");
+                Console.WriteLine("4 - 📊 Resumo\n");
+                Console.WriteLine("0 - ⬅️ Sair");
+                Console.WriteLine("===============================================");
 
-                Console.Clear();
+                option = ReadInt("🔢 Digite uma opção");
 
                 switch (option)
                 {
@@ -65,33 +63,6 @@ namespace Budgify.ConsoleApp
                 }
 
             } while (option != 0);
-
-        }
-
-
-        private void ShowMenu()
-        {
-            Console.WriteLine("===============================================");
-            Console.WriteLine("=================== BUDGIFY ===================");
-            Console.WriteLine("===============================================");
-            Console.WriteLine("1 - Conta");
-            Console.WriteLine("2 - Receita");
-            Console.WriteLine("3 - Despesa");
-            Console.WriteLine("4 - Resumo\n");
-            Console.WriteLine("0 - Sair");
-            Console.WriteLine("===============================================");
-        }
-
-         
-
-       
-
-        
-        private void WaitUser()
-        {
-            Console.WriteLine("\nPressione ENTER para voltar ao menu...");
-            Console.ReadLine();
-            Console.Clear();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Budgify.Application.Interfaces;
 using Budgify.Application.Services;
 using Budgify.ConsoleApp;
+using Budgify.ConsoleApp.Screens;
 using Budgify.Infrastructure.Memory;
 using Budgify.Infrastructure.Repositories;
 
@@ -15,5 +16,5 @@ IExpenseService expenseService = new ExpenseService(expenseRepository, accountRe
 IFinancialSummaryService summaryService = new FinancialSummaryService(incomeRepository, expenseRepository);
 ICreditCardService cardService = new CreditCardService(cardRepository, accountRepository, expenseRepository);
 
-ConsoleUi ui = new ConsoleUi(accountService, incomeService, expenseService, summaryService, cardService);
-ui.Run();
+MainMenuScreen main = new MainMenuScreen(accountService, incomeService, expenseService, summaryService, cardService);
+main.Run();
