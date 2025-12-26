@@ -4,6 +4,8 @@
     {
         public decimal TotalIncome { get; set; }
         public decimal TotalExpense { get; set; }
+        public decimal TotalPaidCreditCard { get; set; }
+        public decimal TotalPendingCreditCard { get; set; }
         public decimal Balance { get; set; }
 
     }

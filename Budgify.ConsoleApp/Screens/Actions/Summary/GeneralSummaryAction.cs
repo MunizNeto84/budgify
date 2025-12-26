@@ -19,7 +19,9 @@ namespace Budgify.ConsoleApp.Screens.Actions.Summary
             ShowHeader("💹 Resumo Geral");
             Console.WriteLine($"🟢 Total de entradas: {summary.TotalIncome:C}");
             Console.WriteLine($"🔴 Total de saidas: {summary.TotalExpense:C}");
-            Console.WriteLine($"🔴 Total de despesas no cartão: \n");
+            Console.WriteLine($"💳 Faturas Pagas (Cartão): {summary.TotalPaidCreditCard:C}");
+            Console.WriteLine($"⏳ Faturas Pendentes:      {summary.TotalPendingCreditCard:C}");
+            Console.WriteLine("------------------------------------------\n");
 
             if ( summary.Balance >= 0)
             {

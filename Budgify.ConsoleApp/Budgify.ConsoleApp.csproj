@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Budgify.Infrastructure\Budgify.Infrastructure.csproj" />
     <ProjectReference Include="..\Budgify.Application\Budgify.Application.csproj" />
+    <ProjectReference Include="..\Budgify.Domain\Budgify.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
