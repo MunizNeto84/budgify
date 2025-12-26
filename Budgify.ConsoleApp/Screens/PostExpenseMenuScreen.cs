@@ -1,18 +1,19 @@
 ﻿using Budgify.Application.Interfaces;
 using Budgify.ConsoleApp.Entities;
-using Budgify.ConsoleApp.Screens.Actions.Income;
+using Budgify.ConsoleApp.Screens.Actions.Expense;
 
 namespace Budgify.ConsoleApp.Screens
 {
-    public class IncomeMenuScreen: BaseScreen
+    public class PostExpenseMenuScreen: BaseScreen
     {
         private readonly IAccountService _accountService;
-        private readonly IIncomeService _incomeService;
-
-        public IncomeMenuScreen(IAccountService accountService, IIncomeService incomeService)
+        private readonly IExpenseService _expenseService;
+        private readonly ICreditCardService _creditCardService;
+        public PostExpenseMenuScreen(IAccountService accountService, IExpenseService expenseService, ICreditCardService creditCardService)
         {
             _accountService = accountService;
-            _incomeService = incomeService;
+            _expenseService = expenseService;
+            _creditCardService = creditCardService;
         }
 
         public void Show()
@@ -20,19 +21,18 @@ namespace Budgify.ConsoleApp.Screens
             int option = -1;
             do
             {
-                ShowHeader("💰 Receitas");
-                Console.WriteLine("1 - 💲 Lançar receita");
-                Console.WriteLine("2 - 📋 Listar receitas");
+                ShowHeader("💸 Lançar despesa");
+                Console.WriteLine("1 - 💲 Debito");
+                Console.WriteLine("2 - 💳 Crédito");
                 Console.WriteLine("\n0 - ↪️ Voltar");
-
                 option = ReadInt("Opção");
                 switch (option)
                 {
                     case 1:
-                        new CreateIncomeAction(_accountService, _incomeService).Execute();
+                        new CreateExpenseAction(_accountService, _expenseService).Execute();
                         break;
                     case 2:
-                        new ListIncomesAction(_incomeService).Execute();
+                        new CreateExpenseCardAction(_accountService, _expenseService, _creditCardService).Execute();
                         break;
                     case 0:
                         Console.WriteLine("Voltando...");
@@ -42,10 +42,9 @@ namespace Budgify.ConsoleApp.Screens
                         Console.WriteLine("Opção inválida.");
                         WaitUser();
                         break;
-
                 }
-
             } while (option != 0);
-        }
+
+            }
     }
 }
