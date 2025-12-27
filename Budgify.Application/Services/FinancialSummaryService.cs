@@ -5,15 +5,17 @@ namespace Budgify.Application.Services
 {
     public class FinancialSummaryService : IFinancialSummaryService
     {
-        public readonly IIncomeRepository _incomeRepository;
-        public readonly IExpenseRepository _expenseRepository;
-        public readonly IAccountRepository _accountRepository;
+        private readonly IIncomeRepository _incomeRepository;
+        private readonly IExpenseRepository _expenseRepository;
+        private readonly IAccountRepository _accountRepository;
+        private readonly ICreditCardRepository _creditCardRepository;
 
-        public FinancialSummaryService(IIncomeRepository incomeRepository, IExpenseRepository expenseRepository, IAccountRepository accountRepository)
+        public FinancialSummaryService(IIncomeRepository incomeRepository, IExpenseRepository expenseRepository, IAccountRepository accountRepository, ICreditCardRepository creditCardRepository)
         {
             _incomeRepository = incomeRepository;
             _expenseRepository = expenseRepository;
             _accountRepository = accountRepository;
+            _creditCardRepository = creditCardRepository;
         }
 
         public FinancialSummaryDto GetSummary()
@@ -37,5 +39,55 @@ namespace Budgify.Application.Services
                 Balance = currentBalance
             };
         }
+
+        public MonthlySummaryDto GetMonthlySummary(int month, int year)
+        {
+            var allIncomes = _incomeRepository.GetAll();
+            var allExpenses = _expenseRepository.GetAll();
+            var allCards = _creditCardRepository.GetAll();
+
+            var monthlyIncome = allIncomes.Where(i => i.Date.Month == month && i.Date.Year == year).Sum(i => i.Amount);
+            decimal monthlyExpense = 0;
+
+            foreach (var expense in allExpenses)
+            {
+                if (expense.CreditCardId == null)
+                {
+                    if (expense.Date.Month == month && expense.Date.Year == year)
+                    {
+                        monthlyExpense += expense.Amount;
+                    }
+                }
+                else
+                {
+                    var card = allCards.FirstOrDefault(c => c.Id == expense.CreditCardId);
+                    if (card != null)
+                    {
+                        DateTime invoiceDate = expense.Date;
+
+                        if (expense.Date.Day > card.ClosingDay)
+                        {
+                            invoiceDate = expense.Date.AddMonths(1);
+                        }
+
+                        if (expense.Date.Month == month && invoiceDate.Year == year)
+                        {
+                            monthlyExpense += expense.Amount;
+                        }
+                    }
+                }
+            }
+
+            return new MonthlySummaryDto
+            {
+                Month = month,
+                Year = year,
+                TotalIncome = monthlyIncome,
+                TotalExpense = monthlyExpense,
+                MonthlyBalance = monthlyIncome - monthlyExpense
+            };
+        }
+
+
     }
 }

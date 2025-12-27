@@ -22,6 +22,11 @@ namespace Budgify.Infrastructure.Repositories
             return _cards.FirstOrDefault(card => card.Id == id);
         }
 
+        public List<CreditCard> GetAll()
+        {
+            return _cards;
+        }
+
         public void Update(CreditCard creditCard)
         {
             var index = _cards.FindIndex(card => card.Id == creditCard.Id);

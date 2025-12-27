@@ -6,6 +6,8 @@ namespace Budgify.Application.Interfaces
     {
         public void Add(CreditCard card);
 
+        List<CreditCard> GetAll();
+
         List<CreditCard> GetByAccountId(Guid accountId);
 
         CreditCard? GetById(Guid id);
