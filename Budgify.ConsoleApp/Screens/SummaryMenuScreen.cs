@@ -36,7 +36,7 @@ namespace Budgify.ConsoleApp.Screens
                         new GeneralSummaryAction(_summaryService).Execute();
                         break;
                     case 2:
-                        //
+                        new MonthlySummaryAction(_summaryService).Execute();
                         break;
                     case 3:
                         //
