@@ -7,5 +7,7 @@ namespace Budgify.Application.Interfaces
         FinancialSummaryDto GetSummary();
         MonthlySummaryDto GetMonthlySummary(int month, int year);
         YearlySummaryDto GetYearlySummary(int year);
+
+        List<FutureInvoiceDto> GetFutureInvoices();
     }
 }

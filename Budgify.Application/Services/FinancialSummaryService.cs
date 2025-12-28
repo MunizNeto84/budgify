@@ -136,6 +136,42 @@ namespace Budgify.Application.Services
             };
         }
 
+        public List<FutureInvoiceDto> GetFutureInvoices()
+        {
+            var expenses = _expenseRepository.GetAll()
+                .Where(e => e.CreditCardId != null && !e.Paid)
+                .ToList();
 
+            var cards = _creditCardRepository.GetAll();
+            var invoiceGroups = new List<(DateTime Date, decimal Amount)>();
+
+            foreach(var expense in expenses)
+            {
+                var card = cards.FirstOrDefault(c => c.Id == expense.CreditCardId);
+                if (card == null) continue;
+
+                DateTime invoiceDate = expense.Date;
+                if (expense.Date.Day > card.ClosingDay)
+                {
+                    invoiceDate = expense.Date.AddMonths(1);
+                }
+
+                DateTime groupKey = new DateTime(invoiceDate.Year, invoiceDate.Month, 1);
+
+                invoiceGroups.Add((groupKey, expense.Amount));
+            }
+
+            var report = invoiceGroups
+                .GroupBy(x => x.Date)
+                .Select(g => new FutureInvoiceDto
+                {
+                    MonthYear = g.Key.ToString("MM/yyyy"),
+                    Amount = g.Sum(x => x.Amount)
+                })
+                .OrderBy(x => x.MonthYear)
+                .ToList();
+
+            return report;
+        }
     }
 }
