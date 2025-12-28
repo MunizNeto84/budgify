@@ -42,7 +42,7 @@ namespace Budgify.ConsoleApp.Screens
                         new YearlySummaryAction(_summaryService).Execute();
                         break;
                     case 4:
-                        //
+                        new FutureInvocesAction(_summaryService).Execute();
                         break;
                     case 0:
                         Console.WriteLine("Voltando...");
