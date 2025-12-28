@@ -88,6 +88,54 @@ namespace Budgify.Application.Services
             };
         }
 
+        public YearlySummaryDto GetYearlySummary(int year)
+        {
+            var allIncomes = _incomeRepository.GetAll();
+            var allExpenses = _expenseRepository.GetAll();
+            var allCards = _creditCardRepository.GetAll();
+
+            var yearlyIncome = allIncomes.Where(i => i.Date.Year == year).Sum(i => i.Amount);
+            decimal yearlyExpense = 0;
+
+            foreach (var expense in allExpenses)
+            {
+                if (expense.CreditCardId == null)
+                {
+                    if (expense.Date.Year == year)
+                    {
+                        yearlyExpense += expense.Amount;
+                    }
+                }
+                else
+                {
+                    var card = allCards.FirstOrDefault(c => c.Id == expense.CreditCardId);
+                    if (card != null)
+                    {
+                        DateTime invoiceDate = expense.Date;
+
+                        if (expense.Date.Day > card.ClosingDay)
+                        {
+                            invoiceDate = expense.Date.AddMonths(1);
+                        }
+
+                        if (expense.Date.Year == year && invoiceDate.Year == year)
+                        {
+                            yearlyExpense += expense.Amount;
+                        }
+                    }
+                }
+            }
+
+            return new YearlySummaryDto
+            {
+                
+                Year = year,
+                TotalIncome = yearlyIncome,
+                TotalExpense = yearlyExpense,
+                YearlyBalance = yearlyIncome - yearlyExpense
+            };
+        }
+
 
     }
 }
